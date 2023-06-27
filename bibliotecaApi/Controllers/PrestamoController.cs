@@ -3,6 +3,7 @@ using bibliotecaApi.Models.Request;
 using bibliotecaApi.Models.Response;
 using bibliotecaApi.Services;
 using bibliotecaApi.Services.Interface;
+using bibliotecaApi.Utils.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +38,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> GetPrestamoPorId(Guid id)
         {
             var resp = await _service.GetPrestamoById(id);
-            if(resp.Code.Equals("ko"))
+            if(resp.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return BadRequest(resp.Message);
             }
@@ -56,7 +57,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> RealizarPrestamo([FromBody] RequestPrestamo request)
         {
             var response = await _service.PrestarLibroToLector(request);
-            if (response.Code.Equals("ko"))
+            if (response.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return BadRequest(response.Message);
             }

@@ -4,6 +4,7 @@ using bibliotecaApi.Models.Request;
 using bibliotecaApi.Models.Response;
 using bibliotecaApi.Services.Interface;
 using bibliotecaApi.Utils;
+using bibliotecaApi.Utils.Enums;
 using bibliotecaApi.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +74,10 @@ namespace bibliotecaApi.Services
                 return CorrectResponseApiData("Se inserto correctamente", newlibro);
             }
             catch (ExistEmptyElementsException e)
+            {
+                return ErrorResponseApi(e.Message);
+            }
+            catch (InvalidIsbnException e)
             {
                 return ErrorResponseApi(e.Message);
             }
@@ -195,9 +200,9 @@ namespace bibliotecaApi.Services
         }
 
 
-        private static Response ErrorResponseApi(string mensaje) => new("ko", mensaje);
-        private static Response CorrectResponseApiData(string mensaje, object data) => new("ok", mensaje, data);
-        private static Response CorrectResponseApi(string mensaje) => new("ok", mensaje);
+        private static Response ErrorResponseApi(string mensaje) => new(CodeStatus.KO.ToString("G"), mensaje);
+        private static Response CorrectResponseApiData(string mensaje, object data) => new(CodeStatus.OK.ToString("G"), mensaje, data);
+        private static Response CorrectResponseApi(string mensaje) => new(CodeStatus.OK.ToString("G"), mensaje);
 
         
     }

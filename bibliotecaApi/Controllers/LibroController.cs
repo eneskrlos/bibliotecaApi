@@ -2,6 +2,7 @@
 using bibliotecaApi.Models.Request;
 using bibliotecaApi.Models.Response;
 using bibliotecaApi.Services;
+using bibliotecaApi.Utils.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bibliotecaApi.Controllers
@@ -49,7 +50,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> CreateLibro([FromBody] RequestLibro request)
         {
             var response = await _libroService.CreateBook(request);
-            if (response.Code.Equals("ko"))
+            if (response.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return BadRequest(response.Message);
             }
@@ -68,12 +69,12 @@ namespace bibliotecaApi.Controllers
         {
             if(id != libroDTO.Id)
             {
-                return BadRequest(new Response("ko", "No son correctos los identificadores"));
+                return BadRequest(new Response(CodeStatus.KO.ToString("G"), "No son correctos los identificadores"));
             }
 
             var response = await _libroService.UpdateBook(libroDTO, id);
 
-            if (response.Code.Equals("ko"))
+            if (response.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return NotFound(response);
             }
@@ -92,7 +93,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> DeleteLibro(Guid id)
         {
             var response = await _libroService.DeleteBook(id);
-            if (response.Code.Equals("ko")) 
+            if (response.Code.Equals(CodeStatus.KO.ToString("G"))) 
             {
                 return NotFound(response);
             }

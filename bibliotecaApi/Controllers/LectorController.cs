@@ -3,6 +3,7 @@ using bibliotecaApi.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 using bibliotecaApi.Models.Request;
 using bibliotecaApi.Models;
+using bibliotecaApi.Utils.Enums;
 
 namespace bibliotecaApi.Controllers
 {
@@ -37,7 +38,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> GetLectorPorId(Guid id)
         {
             var response = await _lectorService.GetLectorById(id);
-            if(response.Code.Equals("ko"))
+            if(response.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return BadRequest(response.Message);
             }
@@ -56,7 +57,7 @@ namespace bibliotecaApi.Controllers
         public async Task<ActionResult<Response>> CreateLector([FromBody] RequestLector lector)
         {
             var response = await _lectorService.CreateLector(lector);
-            if (response.Code.Equals("ko"))
+            if (response.Code.Equals(CodeStatus.KO.ToString("G")))
             {
                 return BadRequest(response.Message);
             }
